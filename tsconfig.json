@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "module": "commonJS",
+        "target": "ES2015",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "sourceMap": true,
+        "strictNullChecks": true
+    }
+}
