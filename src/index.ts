@@ -1,9 +1,10 @@
+import { AccidentalScenario, DisabledRule, ZeroOrOneRule } from './AccidentalScenario'
 import { AlphaPlayer } from './AlphaPlayer'
 
 const appNode = document.getElementById('App')!
 const resumeButton = document.getElementById('resumebtn')!
 
-appNode.innerText = 'Hello world?'
+appNode.innerText = 'Hello worldee?'
 
 const stems = 'aadasdfs'.split('').map((_, index) => {
     return `./content/ALC_PB2_PUSSYFACE/ALC_PB2_PUSSYFACE_${index + 1}.mp3`
@@ -11,7 +12,7 @@ const stems = 'aadasdfs'.split('').map((_, index) => {
 
 const audioCtx = new AudioContext(
     {
-        
+        latencyHint: 'playback'
     } 
 )
 
@@ -38,19 +39,27 @@ resumeButton.onclick = () => {
             const player = new AlphaPlayer(audioBuffers, audioCtx)
             resumeButton.innerText = 'Change scenario'
 
-            resumeButton.onclick = () => {
-                const someScenario = player.scenarios.find(scenario => {
-                    return scenario.name != player.scenarioName
-                })
+            const scenario = new AccidentalScenario([
+                ZeroOrOneRule,
+                ZeroOrOneRule,
+                ZeroOrOneRule,
+                ZeroOrOneRule,
+                ZeroOrOneRule,
+                ZeroOrOneRule,
+                ZeroOrOneRule,
+                DisabledRule
+            ])
 
-                if (someScenario) {
-                    player.applyScenario(someScenario)
-                } else {
-                    console.error('Cant find scenario?')
-                }
+            resumeButton.onclick = () => {
+                const newValues = scenario.generateNextConfig()
+
+                player.applyConfig({
+                    name: 'newconfig',
+                    values: newValues
+                })
             }
 
-            appNode.innerText = 'Success?'
+            appNode.innerText = 'Successorama'
         })
         .catch(err => {
             resumeButton.onclick = null

@@ -1,4 +1,6 @@
-interface Scenario {
+import { randomElement } from "./util/randomElement"
+
+interface Config {
     name: string
     values: number[]
 }
@@ -6,32 +8,26 @@ interface Scenario {
 export class AlphaPlayer {
     readonly ctx: AudioContext
 
+    readonly masterGain: GainNode
+
     readonly nodes: {
         buffer: AudioBufferSourceNode,
         gain: GainNode
     }[]
 
-    scenarioName?: string
-    readonly scenarios: Scenario[]
+    configName?: string
 
     constructor(buffers: AudioBuffer[], ctx: AudioContext) {
         this.ctx = ctx
-        const scenarios: Scenario[] = [
-            {
-                name: 'calm',
-                values: [ 1.0, 0, 0, 0, 0, 1.0, 0, 0 ]
-            },
-            {
-                name: 'cool',
-                values: [ 0, 1.0, 0, 1.0, 0, 0, 0, 0 ]
-            }
-        ]
-        this.scenarios = scenarios
+        const masterGain = ctx.createGain()
+        this.masterGain = masterGain
+        masterGain.gain.value = 0.5
+        masterGain.connect(ctx.destination)
 
         this.nodes = buffers.map(audioBuffer => {
             const gainNode = ctx.createGain()
-            gainNode.connect(ctx.destination)
-            gainNode.gain.value = 0.5
+            gainNode.connect(this.masterGain)
+            gainNode.gain.value = 0.001
 
             const bufferSource = ctx.createBufferSource()
             bufferSource.buffer = audioBuffer
@@ -46,11 +42,11 @@ export class AlphaPlayer {
         })
     }
 
-    applyScenario(scenario: Scenario) {
-        this.scenarioName = scenario.name
+    applyConfig(config: Config) {
+        this.configName = config.name
 
         this.nodes.forEach((node, index) => {
-            const unsafeTargetValue = scenario.values[index]
+            const unsafeTargetValue = config.values[index]
             const safeTargetValue = () => {
                 if (unsafeTargetValue == 0) {
                     return 0.001
