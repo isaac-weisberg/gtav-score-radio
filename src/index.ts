@@ -5,6 +5,7 @@ import { AudioContextManager } from './service/AudioContextManager'
 
 const appNode = document.getElementById('App')!
 const resumeButton = document.getElementById('resumebtn')!
+const intensityField = document.getElementById('intensity') as HTMLInputElement
 
 appNode.innerText = 'Hello worldee?'
 
@@ -27,9 +28,13 @@ resumeButton.onclick = async () => {
         resumeButton.innerText = 'Change scenario'
 
         const scenario = new IntensityDrivenScenario(recoveredSong.intensityData)
-        const intensity = 66
 
         resumeButton.onclick = () => {
+            const intensityOverride = Number.parseInt(intensityField.value)
+            const intensity = Number.isNaN(intensityOverride)
+                ? 100
+                : intensityOverride
+
             const newValues = scenario.generateConfigForIntensity(intensity)
 
             console.log("New configuration", newValues)
