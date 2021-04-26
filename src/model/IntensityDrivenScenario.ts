@@ -12,15 +12,15 @@ export class IntensityDrivenScenario {
     generateConfigForIntensity(intensity: number): number[] {
         return this.internsityData.tracks.map(track => {
             if (isIntensityInIntensityTrack(intensity, track)) {
-                const intensityRange = this.internsityData.maxBound - this.internsityData.minBound
-                const intensityInRange = intensity - this.internsityData.minBound
-                let progressInRange = intensityRange == 0
-                    ? 0.5
-                    : intensityInRange / intensityRange
+                // const intensityRange = this.internsityData.maxBound - this.internsityData.minBound
+                // const intensityInRange = intensity - this.internsityData.minBound
+                // let progressInRange = intensityRange == 0
+                //     ? 0.5
+                //     : intensityInRange / intensityRange
 
                 const randomNumber = Math.random() * magicDecisionReductor
 
-                return progressInRange > randomNumber
+                return 0.5 > randomNumber
                     ? 1
                     : 0
             }
