@@ -1,77 +1,87 @@
-import { AccidentalScenario, DisabledRule, ZeroOrOneRule } from './AccidentalScenario'
-import { AlphaPlayer } from './AlphaPlayer'
-import { CombinatorialScenario } from './CombinatorialScenario'
-import { IntensityDrivenScenario } from './IntensityDrivenScenario'
+import { createGlobalDIDefault } from './di/di'
+import { AlphaPlayer } from './model/AlphaPlayer'
+import { IntensityDrivenScenario } from './model/IntensityDrivenScenario'
+import { AudioContextManager } from './service/AudioContextManager'
 
 const appNode = document.getElementById('App')!
 const resumeButton = document.getElementById('resumebtn')!
 
 appNode.innerText = 'Hello worldee?'
 
-const stems = 'aadasdfs'.split('').map((_, index) => {
-    return `./content/ALC_PB2_PUSSYFACE/ALC_PB2_PUSSYFACE_${index + 1}.mp3`
-})
+const di = createGlobalDIDefault()
 
-const audioCtx = new AudioContext(
-    {
-        latencyHint: 'playback'
-    } 
-)
-
-function fetchAudioBuffer(path: string, ctx: AudioContext): Promise<AudioBuffer> {
-    return fetch(path)
-        .then(resp => {
-            if (resp.status == 404) {
-                throw '404'
+resumeButton.onclick = async () => {
+    try {
+        const song = await di.songLoaderService.recoverSong({
+            recoveryPlan: {
+                kind: 'SongMagicTrackNumberRecoveryPlan',
+                masterString: './content/ALC_PB2_PUSSYFACE/ALC_PB2_PUSSYFACE_NN.mp3',
+                templatedSubstring: 'NN',
+                count: 8
+            },
+            intensityData: {
+                minBound: 0,
+                maxBound: 100,
+                tracks: [
+                    {
+                        min: 0,
+                        max: 100
+                    },
+                    {
+                        min: 0,
+                        max: 50
+                    },
+                    {
+                        min: 25,
+                        max: 100
+                    },
+                    {
+                        min: 0,
+                        max: 100
+                    },
+                    {
+                        min: 50,
+                        max: 100
+                    },
+                    {
+                        min: 0,
+                        max: 100
+                    },
+                    {
+                        min: 50,
+                        max: 100
+                    },
+                    {
+                        min: 75,
+                        max: 100
+                    }
+                ]
             }
-            return resp.arrayBuffer()
         })
-        .then(arrayBuffer => {
-            return audioCtx.decodeAudioData(arrayBuffer)
-        })
-}
 
-const bufferRequests = stems.map(stem => fetchAudioBuffer(stem, audioCtx))
+        const ctxManager = new AudioContextManager()
 
-const allBuffers = Promise.all(bufferRequests)
+        const audioBuffers = await Promise.all(song.audioDataBuffers.map(buffer => ctxManager.ctx.decodeAudioData(buffer)))
 
-resumeButton.onclick = () => {
-    allBuffers
-        .then(audioBuffers => {
-            const player = new AlphaPlayer(audioBuffers, audioCtx)
-            resumeButton.innerText = 'Change scenario'
+        const player = new AlphaPlayer(audioBuffers, ctxManager.ctx)
+        resumeButton.innerText = 'Change scenario'
 
-            // const scenario = new AccidentalScenario([
-            //     ZeroOrOneRule,
-            //     ZeroOrOneRule,
-            //     ZeroOrOneRule,
-            //     ZeroOrOneRule,
-            //     ZeroOrOneRule,
-            //     ZeroOrOneRule,
-            //     ZeroOrOneRule,
-            //     DisabledRule
-            // ])
+        const scenario = new IntensityDrivenScenario(song.intensityData)
+        const intensity = 75
 
-            // const scenario = new CombinatorialScenario()
+        resumeButton.onclick = () => {
+            const newValues = scenario.generateConfigForIntensity(intensity)
 
-            const scenario = new IntensityDrivenScenario()
-            const intensity = 60
+            console.log("New configuration", newValues)
 
-            resumeButton.onclick = () => {
-                const newValues = scenario.generateConfigForIntensity(intensity)
+            player.applyConfig({
+                name: 'newconfig',
+                values: newValues
+            })
+        }
 
-                console.log("New configuration", newValues)
-
-                player.applyConfig({
-                    name: 'newconfig',
-                    values: newValues
-                })
-            }
-
-            appNode.innerText = 'Successorama'
-        })
-        .catch(err => {
-            resumeButton.onclick = null
-            appNode.innerText = `Error: ${err}`
-        })
+    } catch (err) {
+        resumeButton.onclick = null
+        appNode.innerText = `Error: ${err}`
+    }
 }

@@ -1,4 +1,4 @@
-import { randomElement } from "./util/randomElement"
+import { randomElement } from "../util/randomElement"
 
 interface Config {
     name: string
