@@ -1,6 +1,7 @@
 import { AccidentalScenario, DisabledRule, ZeroOrOneRule } from './AccidentalScenario'
 import { AlphaPlayer } from './AlphaPlayer'
 import { CombinatorialScenario } from './CombinatorialScenario'
+import { IntensityDrivenScenario } from './IntensityDrivenScenario'
 
 const appNode = document.getElementById('App')!
 const resumeButton = document.getElementById('resumebtn')!
@@ -51,10 +52,13 @@ resumeButton.onclick = () => {
             //     DisabledRule
             // ])
 
-            const scenario = new CombinatorialScenario()
+            // const scenario = new CombinatorialScenario()
+
+            const scenario = new IntensityDrivenScenario()
+            const intensity = 60
 
             resumeButton.onclick = () => {
-                const newValues = scenario.generateNextConfig()
+                const newValues = scenario.generateConfigForIntensity(intensity)
 
                 console.log("New configuration", newValues)
 
