@@ -1,5 +1,6 @@
 import { AccidentalScenario, DisabledRule, ZeroOrOneRule } from './AccidentalScenario'
 import { AlphaPlayer } from './AlphaPlayer'
+import { CombinatorialScenario } from './CombinatorialScenario'
 
 const appNode = document.getElementById('App')!
 const resumeButton = document.getElementById('resumebtn')!
@@ -39,19 +40,23 @@ resumeButton.onclick = () => {
             const player = new AlphaPlayer(audioBuffers, audioCtx)
             resumeButton.innerText = 'Change scenario'
 
-            const scenario = new AccidentalScenario([
-                ZeroOrOneRule,
-                ZeroOrOneRule,
-                ZeroOrOneRule,
-                ZeroOrOneRule,
-                ZeroOrOneRule,
-                ZeroOrOneRule,
-                ZeroOrOneRule,
-                DisabledRule
-            ])
+            // const scenario = new AccidentalScenario([
+            //     ZeroOrOneRule,
+            //     ZeroOrOneRule,
+            //     ZeroOrOneRule,
+            //     ZeroOrOneRule,
+            //     ZeroOrOneRule,
+            //     ZeroOrOneRule,
+            //     ZeroOrOneRule,
+            //     DisabledRule
+            // ])
+
+            const scenario = new CombinatorialScenario()
 
             resumeButton.onclick = () => {
                 const newValues = scenario.generateNextConfig()
+
+                console.log("New configuration", newValues)
 
                 player.applyConfig({
                     name: 'newconfig',
