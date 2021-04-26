@@ -12,10 +12,22 @@ const SongAudioRecoveryPlanDSO = Union(Record({
 const SongIntensityDataDSO = Record({
     minBound: Number,
     maxBound: Number,
-    tracks: Array(Record({
-        min: Number,
-        max: Number
-    }))
+    tracks: Array(
+        Union(
+            Record(
+                {
+                    min: Number,
+                    max: Number
+                }
+            ),
+            Array(Record(
+                {
+                    min: Number,
+                    max: Number
+                }
+            ))
+        )
+    )
 })
 
 const SongMetaDSO = Record({

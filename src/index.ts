@@ -11,8 +11,9 @@ appNode.innerText = 'Hello worldee?'
 const di = createGlobalDIDefault()
 
 resumeButton.onclick = async () => {
+    resumeButton.onclick = null
     try {
-        const songMetaLocation = './content/ALC_PB2_PUSSYFACE/meta.json'
+        const songMetaLocation = './content/MPHEIST_TRACK3/meta.json'
 
         const songMeta = await di.songMetaLoaderService.loadSongMetaFrom(songMetaLocation)
 
@@ -26,7 +27,7 @@ resumeButton.onclick = async () => {
         resumeButton.innerText = 'Change scenario'
 
         const scenario = new IntensityDrivenScenario(recoveredSong.intensityData)
-        const intensity = 35
+        const intensity = 66
 
         resumeButton.onclick = () => {
             const newValues = scenario.generateConfigForIntensity(intensity)

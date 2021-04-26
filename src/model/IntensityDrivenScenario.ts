@@ -1,5 +1,4 @@
-import { numberIsInClosedRange } from "../util/numberIsInRange"
-import { SongIntensityData } from "./SongMeta"
+import { isIntensityInIntensityTrack, SongIntensityData } from "./SongMeta"
 
 const magicDecisionReductor = 0.9
 
@@ -12,7 +11,7 @@ export class IntensityDrivenScenario {
 
     generateConfigForIntensity(intensity: number): number[] {
         return this.internsityData.tracks.map(track => {
-            if (numberIsInClosedRange(intensity, track.min, track.max)) {
+            if (isIntensityInIntensityTrack(intensity, track)) {
                 const intensityRange = this.internsityData.maxBound - this.internsityData.minBound
                 const intensityInRange = intensity - this.internsityData.minBound
                 let progressInRange = intensityRange == 0
