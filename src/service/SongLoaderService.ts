@@ -1,19 +1,5 @@
-import { SongIntensityData } from "../model/SongIntensityData";
-import { IArrayBufferLoaderService } from "./ArrayBufferLoaderService";
-
-export interface SongMagicTrackNumberRecoveryPlan {
-    kind: 'SongMagicTrackNumberRecoveryPlan',
-    masterString: string,
-    templatedSubstring: string,
-    count: number
-}
-
-export type SongAudioRecoveryPlan = SongMagicTrackNumberRecoveryPlan
-
-export interface SongMeta {
-    recoveryPlan: SongAudioRecoveryPlan
-    intensityData: SongIntensityData
-}
+import { SongIntensityData, SongMeta } from "../model/SongMeta";
+import { ILoaderService } from "./LoaderService";
 
 export interface RecoveredSong {
     audioDataBuffers: ArrayBuffer[]
@@ -27,7 +13,7 @@ export interface ISongLoaderService {
 export class SongLoaderService implements ISongLoaderService {
 
     constructor(
-        readonly arrayBufferLoader: IArrayBufferLoaderService
+        readonly arrayBufferLoader: ILoaderService
     ) {}
 
     async recoverSong(songMeta: SongMeta): Promise<RecoveredSong> {

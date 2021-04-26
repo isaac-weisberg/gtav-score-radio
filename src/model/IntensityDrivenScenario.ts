@@ -1,5 +1,5 @@
-import { SongIntensityData } from "./SongIntensityData"
 import { numberIsInClosedRange } from "../util/numberIsInRange"
+import { SongIntensityData } from "./SongMeta"
 
 const magicDecisionReductor = 0.9
 
