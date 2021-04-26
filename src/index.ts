@@ -14,7 +14,7 @@ const di = createGlobalDIDefault()
 resumeButton.onclick = async () => {
     resumeButton.onclick = null
     try {
-        const songMetaLocation = './content/MPHEIST_TRACK3/meta.json'
+        const songMetaLocation = './meta/ALC_PB2_PUSSYFACE.json'
 
         const songMeta = await di.songMetaLoaderService.loadSongMetaFrom(songMetaLocation)
 
