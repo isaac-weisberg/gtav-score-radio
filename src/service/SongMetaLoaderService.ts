@@ -1,5 +1,5 @@
-import { Array, Literal, Number, Record, Static, String, Undefined, Union } from "runtypes";
-import { SongAudioRecoveryPlan, IntensityTrack, SongMeta } from "../model/SongMeta";
+import { Array, Literal, Number, Record, String, Undefined, Union } from "runtypes";
+import { SongAudioRecoveryPlan, SongMeta } from "../model/SongMeta";
 import { ILoaderService } from "./LoaderService";
 
 const RangeDSO = Record({
@@ -44,9 +44,9 @@ export class SongMetaLoaderService implements ISongMetaLoaderService {
     ) {}
 
     async loadSongMetaFrom(path: string): Promise<SongMeta> {
-        const json = await this.loaderService.loadJsonFrom(path)
+        const rawObject = await this.loaderService.loadYamlFrom(path)
 
-        const songMetaDSO = SongMetaDSO.check(json)
+        const songMetaDSO = SongMetaDSO.check(rawObject)
 
         let recoveryPlanMutable: SongAudioRecoveryPlan
         switch (songMetaDSO.recoveryPlan.kind) {

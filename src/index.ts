@@ -11,8 +11,8 @@ appNode.innerText = 'Hello worldee?'
 
 const di = createGlobalDIDefault()
 
-const pussyfaseMeta = './meta/ALC_PB2_PUSSYFACE.json'
-const mpheist3Meta = './meta/MPHEIST_TRACK3.json'
+const pussyfaseMeta = './meta/ALC_PB2_PUSSYFACE.yaml'
+const mpheist3Meta = './meta/MPHEIST_TRACK3.yaml'
 
 resumeButton.onclick = async () => {
     resumeButton.onclick = null

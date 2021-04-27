@@ -1,0 +1,47 @@
+recoveryPlan:
+  kind: SongMagicTrackNumberRecoveryPlan
+  masterString: "./content/MPHEIST_TRACK3/MPHEIST_TRACK3_NN.mp3"
+  templatedSubstring: NN
+  count: 8
+intensityData:
+  bounds:
+    min: 0
+    max: 100
+  tracks:
+  - might:
+      min: 0
+      max: 25
+    must:
+      min: 25
+      max: 50
+  - might:
+      min: 25
+      max: 75
+  - might:
+      min: 25
+      max: 50
+    must:
+      min: 50
+      max: 75
+  - must:
+      min: 50
+      max: 75
+  - {}
+  - might:
+      min: 25
+      max: 75
+    must:
+      min: 75
+      max: 100
+  - might:
+      min: 50
+      max: 75
+    must:
+      min: 75
+      max: 100
+  - might:
+      min: 25
+      max: 100
+    must:
+      min: 0
+      max: 25
