@@ -1,11 +1,11 @@
 import { numberIsInClosedRange } from "../util/numberIsInRange"
 
-interface IntensityRange {
+interface Range {
     min: number
     max: number
 }
 
-type IntensityTrack = (IntensityRange | IntensityRange[])
+type IntensityTrack = (Range | Range[])
 
 export function isIntensityInIntensityTrack(intensity: number, track: IntensityTrack): boolean {
     if (Array.isArray(track)) {
@@ -15,8 +15,7 @@ export function isIntensityInIntensityTrack(intensity: number, track: IntensityT
 }
 
 export interface SongIntensityData {
-    minBound: number,
-    maxBound: number,
+    bounds: Range
     tracks: IntensityTrack[]
 }
 

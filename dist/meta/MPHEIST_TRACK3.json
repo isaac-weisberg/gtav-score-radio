@@ -6,8 +6,10 @@
         "count": 8
     },
     "intensityData": {
-        "minBound": 0,
-        "maxBound": 100,
+        "bounds": {
+            "min": 0,
+            "max": 100
+        },
         "tracks": [
             {
                 "min": 0,

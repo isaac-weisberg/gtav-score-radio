@@ -11,10 +11,13 @@ appNode.innerText = 'Hello worldee?'
 
 const di = createGlobalDIDefault()
 
+const pussyfaseMeta = './meta/ALC_PB2_PUSSYFACE.json'
+const mpheist3Meta = './meta/MPHEIST_TRACK3.json'
+
 resumeButton.onclick = async () => {
     resumeButton.onclick = null
     try {
-        const songMetaLocation = './meta/ALC_PB2_PUSSYFACE.json'
+        const songMetaLocation = mpheist3Meta
 
         const songMeta = await di.songMetaLoaderService.loadSongMetaFrom(songMetaLocation)
 
@@ -30,12 +33,12 @@ resumeButton.onclick = async () => {
         const scenario = new IntensityDrivenScenario(recoveredSong.intensityData)
 
         resumeButton.onclick = () => {
-            const intensity = Math.random() * scenario.internsityData.maxBound + scenario.internsityData.minBound
+            const intensity = Math.random() * scenario.internsityData.bounds.max + scenario.internsityData.bounds.min
 
             const newValues = scenario.generateConfigForIntensity(intensity)
 
             console.log("New configuration", intensity, 'intensity', newValues)
-            
+
             player.applyConfig({
                 name: 'newconfig',
                 values: newValues
