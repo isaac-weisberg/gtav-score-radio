@@ -1,11 +1,16 @@
-import { Array, Literal, Number, Record, String, Union } from "runtypes";
-import { SongAudioRecoveryPlan, SongMeta } from "../model/SongMeta";
+import { Array, Literal, Number, Record, Static, String, Undefined, Union } from "runtypes";
+import { SongAudioRecoveryPlan, IntensityTrack, SongMeta } from "../model/SongMeta";
 import { ILoaderService } from "./LoaderService";
 
-const Range = Record({
+const RangeDSO = Record({
     min: Number,
     max: Number
 })
+
+const PolyrageDSO = Union(
+    RangeDSO,
+    Array(RangeDSO)
+)
 
 const SongAudioRecoveryPlanDSO = Union(Record({
     kind: Literal('SongMagicTrackNumberRecoveryPlan'),
@@ -14,14 +19,14 @@ const SongAudioRecoveryPlanDSO = Union(Record({
     count: Number
 }))
 
+const SongIntensityTrackDSO = Record({
+    might: PolyrageDSO.optional(),
+    must: PolyrageDSO.optional()
+})
+
 const SongIntensityDataDSO = Record({
-    bounds: Range,
-    tracks: Array(
-        Union(
-            Range,
-            Array(Range)
-        )
-    )
+    bounds: RangeDSO,
+    tracks: Array(SongIntensityTrackDSO)
 })
 
 const SongMetaDSO = Record({

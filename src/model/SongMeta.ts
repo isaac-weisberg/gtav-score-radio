@@ -1,17 +1,8 @@
-import { numberIsInClosedRange } from "../util/numberIsInRange"
+import { Polyrange, Range } from "../util/Range"
 
-interface Range {
-    min: number
-    max: number
-}
-
-type IntensityTrack = (Range | Range[])
-
-export function isIntensityInIntensityTrack(intensity: number, track: IntensityTrack): boolean {
-    if (Array.isArray(track)) {
-        return track.some(range => numberIsInClosedRange(intensity, range.min, range.max))
-    }
-    return numberIsInClosedRange(intensity, track.min, track.max)
+export interface IntensityTrack {
+    might?: Polyrange,
+    must?: Polyrange
 }
 
 export interface SongIntensityData {
