@@ -18,11 +18,12 @@ export class IntensityDrivenScenario {
                 //     ? 0.5
                 //     : intensityInRange / intensityRange
 
-                const randomNumber = Math.random() * magicDecisionReductor
+                // const randomNumber = Math.random() * magicDecisionReductor
 
-                return 0.5 > randomNumber
-                    ? 1
-                    : 0
+                // return 0.5 > randomNumber
+                //     ? 1
+                //     : 0
+                return 1
             }
             return 0
         })

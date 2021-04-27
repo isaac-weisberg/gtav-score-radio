@@ -30,15 +30,12 @@ resumeButton.onclick = async () => {
         const scenario = new IntensityDrivenScenario(recoveredSong.intensityData)
 
         resumeButton.onclick = () => {
-            const intensityOverride = Number.parseInt(intensityField.value)
-            const intensity = Number.isNaN(intensityOverride)
-                ? 100
-                : intensityOverride
+            const intensity = Math.random() * scenario.internsityData.maxBound + scenario.internsityData.minBound
 
             const newValues = scenario.generateConfigForIntensity(intensity)
 
-            console.log("New configuration", newValues)
-
+            console.log("New configuration", intensity, 'intensity', newValues)
+            
             player.applyConfig({
                 name: 'newconfig',
                 values: newValues
