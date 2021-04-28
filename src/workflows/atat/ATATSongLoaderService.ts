@@ -1,26 +1,26 @@
-import { SongIntensityData, SongMeta } from "../model/SongMeta";
-import { ILoaderService } from "./LoaderService";
+import { ATATSongIntensityData, ATATSongMeta } from "./ATATSongMeta";
+import { ILoaderService } from "../../service/LoaderService";
 
-export interface RecoveredSong {
+export interface ATATRecoveredSong {
     audioDataBuffers: ArrayBuffer[]
-    intensityData: SongIntensityData
+    intensityData: ATATSongIntensityData
 }
 
-export interface ISongLoaderService {
-    recoverSong(songMeta: SongMeta): Promise<RecoveredSong>
+export interface IATATSongLoaderService {
+    recoverSong(songMeta: ATATSongMeta): Promise<ATATRecoveredSong>
 }
 
-export class SongLoaderService implements ISongLoaderService {
+export class ATATSongLoaderService implements IATATSongLoaderService {
 
     constructor(
         readonly arrayBufferLoader: ILoaderService
     ) {}
 
-    async recoverSong(songMeta: SongMeta): Promise<RecoveredSong> {
+    async recoverSong(songMeta: ATATSongMeta): Promise<ATATRecoveredSong> {
         const recoveryPlan = songMeta.recoveryPlan
 
         switch (recoveryPlan.kind) {
-        case 'SongMagicTrackNumberRecoveryPlan':
+        case 'ATATSongMagicTrackNumberRecoveryPlan':
             const paths = [...Array(recoveryPlan.count).keys()].map(index => {
                 return recoveryPlan.masterString.replace(recoveryPlan.templatedSubstring, `${index + 1}`)
             })

@@ -1,6 +1,6 @@
 import { createGlobalDIDefault } from './di/di'
 import { AlphaPlayer } from './model/AlphaPlayer'
-import { IntensityDrivenScenario } from './model/IntensityDrivenScenario'
+import { ATATIntensityDrivenScenario } from './workflows/atat/ATATIntensityDrivenScenario'
 import { AudioContextManager } from './service/AudioContextManager'
 
 const appNode = document.getElementById('App')!
@@ -30,7 +30,7 @@ resumeButton.onclick = async () => {
         const player = new AlphaPlayer(audioBuffers, ctxManager.ctx)
         resumeButton.innerText = 'Change scenario'
 
-        const scenario = new IntensityDrivenScenario(recoveredSong.intensityData)
+        const scenario = new ATATIntensityDrivenScenario(recoveredSong.intensityData)
 
         resumeButton.onclick = () => {
             const intensity = Math.random() * scenario.internsityData.bounds.max + scenario.internsityData.bounds.min

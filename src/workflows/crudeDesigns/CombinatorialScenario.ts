@@ -1,4 +1,5 @@
-import { randomElement } from "../util/randomElement"
+import { randomElement } from "../../util/randomElement"
+
 
 const CombinatorialNeverRule: {
     kind: 'CombinatorialNeverRule'

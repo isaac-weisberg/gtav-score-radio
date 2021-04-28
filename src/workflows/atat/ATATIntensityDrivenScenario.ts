@@ -1,11 +1,11 @@
-import { numberIsInClosedPolyrange } from "../util/Range"
-import { SongIntensityData } from "./SongMeta"
+import { numberIsInClosedPolyrange } from "../../util/Range"
+import { ATATSongIntensityData } from "./ATATSongMeta"
 
 const magicDecisionReductor = 0.9
 
-export class IntensityDrivenScenario {
+export class ATATIntensityDrivenScenario {
     constructor(
-        readonly internsityData: SongIntensityData
+        readonly internsityData: ATATSongIntensityData
     ) {}
 
     generateConfigForIntensity(intensity: number): number[] {

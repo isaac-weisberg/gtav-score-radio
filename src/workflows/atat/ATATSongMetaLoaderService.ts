@@ -1,6 +1,6 @@
-import { Array, Literal, Number, Record, String, Undefined, Union } from "runtypes";
-import { SongAudioRecoveryPlan, SongMeta } from "../model/SongMeta";
-import { ILoaderService } from "./LoaderService";
+import { Array, Literal, Number, Record, String, Union } from "runtypes";
+import { ILoaderService } from "../../service/LoaderService";
+import { ATATSongAudioRecoveryPlan, ATATSongMeta } from "./ATATSongMeta";
 
 const RangeDSO = Record({
     min: Number,
@@ -12,47 +12,47 @@ const PolyrageDSO = Union(
     Array(RangeDSO)
 )
 
-const SongAudioRecoveryPlanDSO = Union(Record({
+const ATATSongAudioRecoveryPlanDSO = Union(Record({
     kind: Literal('SongMagicTrackNumberRecoveryPlan'),
     masterString: String,
     templatedSubstring: String,
     count: Number
 }))
 
-const SongIntensityTrackDSO = Record({
+const ATATSongIntensityTrackDSO = Record({
     might: PolyrageDSO.optional(),
     must: PolyrageDSO.optional()
 })
 
-const SongIntensityDataDSO = Record({
+const ATATSongIntensityDataDSO = Record({
     bounds: RangeDSO,
-    tracks: Array(SongIntensityTrackDSO)
+    tracks: Array(ATATSongIntensityTrackDSO)
 })
 
-const SongMetaDSO = Record({
-    recoveryPlan: SongAudioRecoveryPlanDSO,
-    intensityData: SongIntensityDataDSO
+const ATATSongMetaDSO = Record({
+    recoveryPlan: ATATSongAudioRecoveryPlanDSO,
+    intensityData: ATATSongIntensityDataDSO
 })
 
-export interface ISongMetaLoaderService {
-    loadSongMetaFrom(path: string): Promise<SongMeta>
+export interface IATATSongMetaLoaderService {
+    loadSongMetaFrom(path: string): Promise<ATATSongMeta>
 }
 
-export class SongMetaLoaderService implements ISongMetaLoaderService {
+export class ATATSongMetaLoaderService implements IATATSongMetaLoaderService {
     constructor(
         readonly loaderService: ILoaderService
     ) {}
 
-    async loadSongMetaFrom(path: string): Promise<SongMeta> {
+    async loadSongMetaFrom(path: string): Promise<ATATSongMeta> {
         const rawObject = await this.loaderService.loadYamlFrom(path)
 
-        const songMetaDSO = SongMetaDSO.check(rawObject)
+        const songMetaDSO = ATATSongMetaDSO.check(rawObject)
 
-        let recoveryPlanMutable: SongAudioRecoveryPlan
+        let recoveryPlanMutable: ATATSongAudioRecoveryPlan
         switch (songMetaDSO.recoveryPlan.kind) {
         case 'SongMagicTrackNumberRecoveryPlan':
             recoveryPlanMutable = {
-                kind: 'SongMagicTrackNumberRecoveryPlan',
+                kind: 'ATATSongMagicTrackNumberRecoveryPlan',
                 masterString: songMetaDSO.recoveryPlan.masterString,
                 templatedSubstring: songMetaDSO.recoveryPlan.templatedSubstring,
                 count: songMetaDSO.recoveryPlan.count,

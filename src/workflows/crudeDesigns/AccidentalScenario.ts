@@ -1,4 +1,4 @@
-import { randomElement } from "../util/randomElement"
+import { randomElement } from "../../util/randomElement"
 
 interface RandomRule {
     kind: 'RandomRule'

@@ -1,15 +1,15 @@
 import { LoaderService, ILoaderService } from "../service/LoaderService";
-import { ISongLoaderService, SongLoaderService } from "../service/SongLoaderService";
-import { ISongMetaLoaderService, SongMetaLoaderService } from "../service/SongMetaLoaderService";
+import { IATATSongLoaderService, ATATSongLoaderService } from "../workflows/atat/ATATSongLoaderService";
+import { ATATSongMetaLoaderService, IATATSongMetaLoaderService } from "../workflows/atat/ATATSongMetaLoaderService";
 
 export interface HasArrayBufferLoaderService {
     loaderService: ILoaderService
 }
 export interface HasSongLoaderService {
-    songLoaderService: ISongLoaderService
+    songLoaderService: IATATSongLoaderService
 }
 export interface HasSongMetaLoaderService {
-    songMetaLoaderService: ISongMetaLoaderService
+    songMetaLoaderService: IATATSongMetaLoaderService
 }
 
 export type GlobalDI = HasArrayBufferLoaderService
@@ -21,7 +21,7 @@ export function createGlobalDIDefault(): GlobalDI {
 
     return {
         loaderService: loaderService,
-        songLoaderService: new SongLoaderService(loaderService),
-        songMetaLoaderService: new SongMetaLoaderService(loaderService)
+        songLoaderService: new ATATSongLoaderService(loaderService),
+        songMetaLoaderService: new ATATSongMetaLoaderService(loaderService)
     }
 }
