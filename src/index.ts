@@ -11,17 +11,17 @@ appNode.innerText = 'Hello worldee?'
 
 const di = createGlobalDIDefault()
 
-const pussyfaseMeta = './meta/ALC_PB2_PUSSYFACE.yaml'
-const mpheist3Meta = './meta/MPHEIST_TRACK3.yaml'
+const pussyfaseMeta = './meta-atat/ALC_PB2_PUSSYFACE.ATAT.yaml'
+const mpheist3Meta = './meta-atat/MPHEIST_TRACK3.ATAT.yaml'
 
 resumeButton.onclick = async () => {
     resumeButton.onclick = null
     try {
         const songMetaLocation = mpheist3Meta
 
-        const songMeta = await di.songMetaLoaderService.loadSongMetaFrom(songMetaLocation)
+        const songMeta = await di.atatSongMetaLoaderService.loadSongMetaFrom(songMetaLocation)
 
-        const recoveredSong = await di.songLoaderService.recoverSong(songMeta)
+        const recoveredSong = await di.songRecoveryService.recoverSong(songMeta.recoveryPlan)
 
         const ctxManager = new AudioContextManager()
 
@@ -30,7 +30,7 @@ resumeButton.onclick = async () => {
         const player = new AlphaPlayer(audioBuffers, ctxManager.ctx)
         resumeButton.innerText = 'Change scenario'
 
-        const scenario = new ATATIntensityDrivenScenario(recoveredSong.intensityData)
+        const scenario = new ATATIntensityDrivenScenario(songMeta.intensityData)
 
         resumeButton.onclick = () => {
             const intensity = Math.random() * scenario.internsityData.bounds.max + scenario.internsityData.bounds.min

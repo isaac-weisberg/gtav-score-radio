@@ -1,6 +1,7 @@
 import { Array, Literal, Number, Record, String, Union } from "runtypes";
+import { SongRecoveryPlan } from "../../model/SongRecovery";
 import { ILoaderService } from "../../service/LoaderService";
-import { ATATSongAudioRecoveryPlan, ATATSongMeta } from "./ATATSongMeta";
+import { ATATSongMeta } from "./ATATSongMeta";
 
 const RangeDSO = Record({
     min: Number,
@@ -48,11 +49,11 @@ export class ATATSongMetaLoaderService implements IATATSongMetaLoaderService {
 
         const songMetaDSO = ATATSongMetaDSO.check(rawObject)
 
-        let recoveryPlanMutable: ATATSongAudioRecoveryPlan
+        let recoveryPlanMutable: SongRecoveryPlan
         switch (songMetaDSO.recoveryPlan.kind) {
         case 'SongMagicTrackNumberRecoveryPlan':
             recoveryPlanMutable = {
-                kind: 'ATATSongMagicTrackNumberRecoveryPlan',
+                kind: 'SongMagicTrackNumberRecoveryPlan',
                 masterString: songMetaDSO.recoveryPlan.masterString,
                 templatedSubstring: songMetaDSO.recoveryPlan.templatedSubstring,
                 count: songMetaDSO.recoveryPlan.count,
