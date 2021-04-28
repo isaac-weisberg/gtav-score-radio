@@ -1,38 +1,23 @@
-import { Array, Literal, Number, Record, String, Union } from "runtypes";
-import { SongRecoveryPlan } from "../../model/SongRecovery";
+import { Array, Record } from "runtypes";
+import { PolyrangeDTO, RangeDTO } from "../../model/RangeDTO";
+import { songRecoveryPlanFromDTO } from "../../model/SongRecovery";
+import { SongRecoveryPlanDTO } from "../../model/SongRecoveryDTO";
 import { ILoaderService } from "../../service/LoaderService";
 import { ATATSongMeta } from "./ATATSongMeta";
 
-const RangeDSO = Record({
-    min: Number,
-    max: Number
+const ATATSongIntensityTrackDTO = Record({
+    might: PolyrangeDTO.optional(),
+    must: PolyrangeDTO.optional()
 })
 
-const PolyrageDSO = Union(
-    RangeDSO,
-    Array(RangeDSO)
-)
-
-const ATATSongAudioRecoveryPlanDSO = Union(Record({
-    kind: Literal('SongMagicTrackNumberRecoveryPlan'),
-    masterString: String,
-    templatedSubstring: String,
-    count: Number
-}))
-
-const ATATSongIntensityTrackDSO = Record({
-    might: PolyrageDSO.optional(),
-    must: PolyrageDSO.optional()
+const ATATSongIntensityDataDTO = Record({
+    bounds: RangeDTO,
+    tracks: Array(ATATSongIntensityTrackDTO)
 })
 
-const ATATSongIntensityDataDSO = Record({
-    bounds: RangeDSO,
-    tracks: Array(ATATSongIntensityTrackDSO)
-})
-
-const ATATSongMetaDSO = Record({
-    recoveryPlan: ATATSongAudioRecoveryPlanDSO,
-    intensityData: ATATSongIntensityDataDSO
+const ATATSongMetaDTO = Record({
+    recoveryPlan: SongRecoveryPlanDTO,
+    intensityData: ATATSongIntensityDataDTO
 })
 
 export interface IATATSongMetaLoaderService {
@@ -47,24 +32,13 @@ export class ATATSongMetaLoaderService implements IATATSongMetaLoaderService {
     async loadSongMetaFrom(path: string): Promise<ATATSongMeta> {
         const rawObject = await this.loaderService.loadYamlFrom(path)
 
-        const songMetaDSO = ATATSongMetaDSO.check(rawObject)
+        const songMetaDTO = ATATSongMetaDTO.check(rawObject)
 
-        let recoveryPlanMutable: SongRecoveryPlan
-        switch (songMetaDSO.recoveryPlan.kind) {
-        case 'SongMagicTrackNumberRecoveryPlan':
-            recoveryPlanMutable = {
-                kind: 'SongMagicTrackNumberRecoveryPlan',
-                masterString: songMetaDSO.recoveryPlan.masterString,
-                templatedSubstring: songMetaDSO.recoveryPlan.templatedSubstring,
-                count: songMetaDSO.recoveryPlan.count,
-            }
-        }
-
-        const recoveryPlan = recoveryPlanMutable
+        const recoveryPlan = songRecoveryPlanFromDTO(songMetaDTO.recoveryPlan)
 
         return {
             recoveryPlan: recoveryPlan,
-            intensityData: songMetaDSO.intensityData
+            intensityData: songMetaDTO.intensityData
         }
     }
 }

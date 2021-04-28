@@ -1,4 +1,4 @@
-import { numberIsInClosedPolyrange } from "../../util/Range"
+import { numberIsInClosedPolyrange } from "../../model/Range"
 import { ATATSongIntensityData } from "./ATATSongMeta"
 
 const magicDecisionReductor = 0.9

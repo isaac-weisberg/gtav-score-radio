@@ -1,5 +1,5 @@
 import { SongRecoveryPlan } from "../../model/SongRecovery";
-import { Polyrange, Range } from "../../util/Range"
+import { Polyrange, Range } from "../../model/Range"
 
 export interface ATATIntensityTrack {
     might?: Polyrange,
