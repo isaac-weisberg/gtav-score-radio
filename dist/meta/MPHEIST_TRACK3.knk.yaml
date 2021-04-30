@@ -4,13 +4,10 @@ recoveryPlan:
   templatedSubstring: NN
   count: 8
 prefabData:
+  trackCount: 8
   prefabs:
-    - tracks:
+    - must: 
+        - 0
+      might:
         - 1
-        - 7
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
         - 7

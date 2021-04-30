@@ -13,19 +13,24 @@ export class KNKScenario {
             return undefined
         }
 
-        return randomPrefab.tracks.map(track => {
-            switch (track.kind) {
-                case 'KNKTrackAlways':
-                    return 1
-                case 'KNKTrackNever':
-                    return 0
-                case 'KNKTrackFairMaybe':
-                    const randomNumber = Math.random()
-                    if (randomNumber > 0.5) {
-                        return 1
-                    }
-                    return 0
+        const must = randomPrefab.must
+        const might = randomPrefab.might
+
+        return [...Array(this.prefabData.trackCount).keys()].map(index => {
+            if (must?.find(el => el == index) == index) {
+                console.log('Found must', index, 'in', must)
+                return 1
             }
+            if (might?.find(el => el == index) == index) {
+                console.log('Found might', index, 'in', might)
+                const randomNumber = Math.random()
+                if (randomNumber > 0.5) {
+                    return 1
+                }
+                return 0
+            }
+            console.log('Found nothing', index)
+            return 0
         })
     }
 }
