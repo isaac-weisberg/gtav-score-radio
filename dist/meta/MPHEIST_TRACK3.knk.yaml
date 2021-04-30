@@ -1,0 +1,16 @@
+recoveryPlan:
+  kind: SongMagicTrackNumberRecoveryPlan
+  masterString: "./content/MPHEIST_TRACK3/MPHEIST_TRACK3_NN.mp3"
+  templatedSubstring: NN
+  count: 8
+prefabData:
+  prefabs:
+    - tracks:
+        - 1
+        - 7
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 7

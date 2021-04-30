@@ -2,6 +2,7 @@ import { createGlobalDIDefault } from './di/di'
 import { AlphaPlayer } from './model/AlphaPlayer'
 import { ATATIntensityDrivenScenario } from './workflows/atat/ATATIntensityDrivenScenario'
 import { AudioContextManager } from './service/AudioContextManager'
+import { KNKScenario } from './workflows/knkscenario/KNKScenario'
 
 const appNode = document.getElementById('App')!
 const resumeButton = document.getElementById('resumebtn')!
@@ -11,15 +12,14 @@ appNode.innerText = 'Hello worldee?'
 
 const di = createGlobalDIDefault()
 
-const pussyfaseMeta = './meta-atat/ALC_PB2_PUSSYFACE.ATAT.yaml'
-const mpheist3Meta = './meta-atat/MPHEIST_TRACK3.ATAT.yaml'
+const mpheist3Meta = './meta/MPHEIST_TRACK3.knk.yaml'
 
 resumeButton.onclick = async () => {
     resumeButton.onclick = null
     try {
         const songMetaLocation = mpheist3Meta
 
-        const songMeta = await di.atatSongMetaLoaderService.loadSongMetaFrom(songMetaLocation)
+        const songMeta = await di.knkSongMetaLoaderService.loadSongMetaFrom(songMetaLocation)
 
         const recoveredSong = await di.songRecoveryService.recoverSong(songMeta.recoveryPlan)
 
@@ -30,14 +30,16 @@ resumeButton.onclick = async () => {
         const player = new AlphaPlayer(audioBuffers, ctxManager.ctx)
         resumeButton.innerText = 'Change scenario'
 
-        const scenario = new ATATIntensityDrivenScenario(songMeta.intensityData)
+        const scenario = new KNKScenario(songMeta.prefabData)
 
         resumeButton.onclick = () => {
-            const intensity = Math.random() * scenario.internsityData.bounds.max + scenario.internsityData.bounds.min
+            const newValues = scenario.generateConfig()
+            
+            if (!newValues) {
+                return
+            }
 
-            const newValues = scenario.generateConfigForIntensity(intensity)
-
-            console.log("New configuration", intensity, 'intensity', newValues)
+            console.log("New configuration", newValues)
 
             player.applyConfig({
                 name: 'newconfig',

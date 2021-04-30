@@ -1,5 +1,5 @@
 import { randomElement } from "../../util/randomElement";
-import { KNKPrefabData } from "./KNKPrefabData";
+import { KNKPrefabData } from "./model/KNKPrefabData";
 
 export class KNKScenario {
     constructor(
