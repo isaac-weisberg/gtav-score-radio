@@ -1,4 +1,4 @@
-import { randomElement } from "../../util/randomElement";
+import { arrayByRandomlyDropping, randomElement, randomIntNumber } from "../../util/randomElement";
 import { KNKPrefabData } from "./model/KNKPrefabData";
 
 export class KNKScenario {
@@ -7,29 +7,47 @@ export class KNKScenario {
     ) { }
 
     generateConfig(): number[] | undefined {
-        const randomPrefab = randomElement(this.prefabData.prefabs)
+        // const randomPrefab = randomElement(this.prefabData.prefabs)
+        const randomPrefab = this.prefabData.prefabs[this.prefabData.prefabs.length - 1]
 
         if (!randomPrefab) {
             return undefined
         }
 
-        const must = randomPrefab.must
+        const must = randomPrefab.must || []
         const might = randomPrefab.might
 
-        return [...Array(this.prefabData.trackCount).keys()].map(index => {
-            if (must?.find(el => el == index) == index) {
-                console.log('Found must', index, 'in', must)
-                return 1
+        const mustOfMight: number[] = (() => {
+            if (!might) {
+                return []
             }
-            if (might?.find(el => el == index) == index) {
-                console.log('Found might', index, 'in', might)
-                const randomNumber = Math.random()
-                if (randomNumber > 0.5) {
+
+            const maxItemCountToDrop = (() => {
+                if (might.length < 2) {
+                    return 0
+                }
+                if (might.length == 2) {
                     return 1
                 }
-                return 0
+                if (might.length == 3) {
+                    return 2
+                }
+                const droppableFactor = 0.5
+
+                return Math.floor(might.length * droppableFactor)
+            })()
+
+            const itemsToDrop = randomIntNumber(0, maxItemCountToDrop)
+
+            return arrayByRandomlyDropping(might, itemsToDrop)
+        })()
+
+        const totalMust = must.concat(mustOfMight)
+
+        return [...Array(this.prefabData.trackCount).keys()].map(index => {
+            if (totalMust.includes(index)) {
+                return 1
             }
-            console.log('Found nothing', index)
             return 0
         })
     }

@@ -11,3 +11,20 @@ prefabData:
       might:
         - 1
         - 7
+    - must:
+        - 2
+      might:
+        - 1
+        - 7
+    - must:
+        - 3
+      might:
+        - 2
+        - 7
+        - 5
+    - must:
+        - 3
+      might:
+        - 0
+        - 7
+        - 5
