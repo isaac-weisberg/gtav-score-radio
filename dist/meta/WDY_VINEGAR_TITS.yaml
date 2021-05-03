@@ -1,0 +1,48 @@
+recoveryPlan:
+  kind: SongMagicTrackNumberRecoveryPlan
+  masterString: "./content/WDY_VINEGAR_TITS/WDY_VINEGAR_TITS_NN.mp3"
+  templatedSubstring: NN
+  count: 8
+prefabData:
+  trackCount: 8
+  prefabs:
+    - must:
+        - 3
+      might:
+        - 0
+        - 1
+    - might:
+        - 0
+        - 1
+    - must:
+        - 5
+      might:
+        - 3
+        - 1
+        - 0
+    - must:
+        - 5
+      might:
+        - 3
+        - 1
+        - 0
+        - 2
+    - must:
+        - 5
+        - 6
+      might:
+        - 3
+        - 1
+        - 0
+        - 2
+        - 4
+    - must:
+        - 5
+        - 6
+      might:
+        - 3
+        - 1
+        - 0
+        - 2
+        - 4
+        - 7

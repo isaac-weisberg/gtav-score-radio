@@ -13,11 +13,12 @@ appNode.innerText = 'Hello worldee?'
 const di = createGlobalDIDefault()
 
 const mpheist3Meta = './meta/MPHEIST_TRACK3.knk.yaml'
+const vinegarTitsMeta = './meta/WDY_VINEGAR_TITS.yaml'
 
 resumeButton.onclick = async () => {
     resumeButton.onclick = null
     try {
-        const songMetaLocation = mpheist3Meta
+        const songMetaLocation = vinegarTitsMeta
 
         const songMeta = await di.knkSongMetaLoaderService.loadSongMetaFrom(songMetaLocation)
 
