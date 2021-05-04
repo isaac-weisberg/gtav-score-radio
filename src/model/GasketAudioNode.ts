@@ -20,8 +20,6 @@ export class GasketAudioNode {
         node.onended = () => {
             this.scheduleNextNodeAtTime(this.nextTime(scheduledOdd), scheduledOdd)
         }
-
-        console.log('Scheduled odd =', scheduledOdd, 'to play at', time)
     }
 
     private nextTime(forOddScheduling: boolean): number {

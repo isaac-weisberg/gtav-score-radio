@@ -1,6 +1,6 @@
 recoveryPlan:
   kind: SongMagicTrackNumberRecoveryPlan
-  masterString: "./content/WDY_VINEGAR_TITS_2BAR/WDY_VINEGAR_TITS_NN.wav"
+  masterString: "./content/WDY_VINEGAR_TITS_2BAR/WDY_VINEGAR_TITS_NN.mp3"
   templatedSubstring: NN
   count: 8
 prefabData:
