@@ -30,8 +30,7 @@ export class AlphaPlayer {
             gainNode.connect(this.masterGain)
             gainNode.gain.value = 0.001
 
-            const gasketAudioNode = new GasketAudioNode(audioBuffer, ctx)
-            gasketAudioNode.connect(gainNode)
+            const gasketAudioNode = new GasketAudioNode(audioBuffer, gainNode, ctx)
             gasketAudioNode.start()
             
             return {

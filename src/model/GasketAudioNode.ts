@@ -1,73 +1,60 @@
 export class GasketAudioNode {
-    readonly node1: AudioBufferSourceNode
-    readonly node2: AudioBufferSourceNode
-    readonly bufferDuration: number
-
     constructor(
-        audioBuffer: AudioBuffer,
+        readonly audioBuffer: AudioBuffer,
+        readonly output: AudioNode,
         readonly ctx: AudioContext
-    ) {
-        this.bufferDuration = audioBuffer.duration
-
-        this.node1 = ctx.createBufferSource()
-        this.node1.buffer = audioBuffer
-
-        this.node2 = ctx.createBufferSource()
-        this.node2.buffer = audioBuffer
-    }
-
-    connect(node: AudioNode) {
-        this.node1.connect(node)
-        this.node2.connect(node)
-    }
+    ) { }
 
     start() {
         const startTime = this.ctx.currentTime
-
-        this.node1.start(startTime)
-
-        this.node1.onended = () => {
-            const currentTime = this.ctx.currentTime
-
-            const allLoopsPassed = Math.floor(currentTime / this.bufferDuration)
-            
-            const isEven = allLoopsPassed % 2 == 0
-
-            const nextLoopIndex = allLoopsPassed + (() => {
-                if (isEven) {
-                    return 2
-                }
-                return 1
-            })()
-            
-            const nextTime = this.bufferDuration * nextLoopIndex
-
-            this.node1.stop()
-            this.node1.start(nextTime)
-        }
-
-        const timeForSecondNode = startTime + this.bufferDuration
-        this.node2.start(timeForSecondNode)
-
-        this.node2.onended = () => {
-            const currentTime = this.ctx.currentTime
-
-            const allLoopsPassed = Math.floor(currentTime / this.bufferDuration)
-            
-            const isOdd = allLoopsPassed % 2 == 1
-
-            const nextLoopIndex = allLoopsPassed + (() => {
-                if (isOdd) {
-                    return 2
-                }
-                return 1
-            })()
-            
-            const nextTime = this.bufferDuration * nextLoopIndex
-
-            this.node2.stop()
-            this.node2.start(nextTime)
-        }
+        this.scheduleNextNodeAtTime(startTime, false)
         
+        const timeForSecondNode = startTime + this.audioBuffer.duration
+        this.scheduleNextNodeAtTime(timeForSecondNode, true)      
+    }
+
+    private scheduleNextNodeAtTime(time: number, scheduledOdd: boolean) {
+        const node = this.createBufferSource()
+
+        node.start(time)
+        node.onended = () => {
+            this.scheduleNextNodeAtTime(this.nextTime(scheduledOdd), scheduledOdd)
+        }
+
+        console.log('Scheduled odd =', scheduledOdd, 'to play at', time)
+    }
+
+    private nextTime(forOddScheduling: boolean): number {
+        const allLoopsPassed = this.loopsPassed()
+            
+        const theOneWereLookingFor = allLoopsPassed % 2 == (forOddScheduling ? 1 : 2)
+
+        const nextLoopIndex = allLoopsPassed + (() => {
+            if (theOneWereLookingFor) {
+                return 2
+            }
+            return 1
+        })()
+        
+        const nextTime = this.audioBuffer.duration * nextLoopIndex
+
+        return nextTime
+    }
+
+    private loopsPassed(): number {
+        const currentTime = this.ctx.currentTime
+
+        const allLoopsPassed = Math.floor(currentTime / this.audioBuffer.duration)
+
+        return allLoopsPassed
+    }
+
+    private createBufferSource() {
+        const node = this.ctx.createBufferSource()
+
+        node.buffer = this.audioBuffer
+        node.connect(this.output)
+
+        return node
     }
 }
