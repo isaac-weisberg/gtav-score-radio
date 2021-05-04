@@ -14,11 +14,12 @@ const di = createGlobalDIDefault()
 
 const mpheist3Meta = './meta/MPHEIST_TRACK3.knk.yaml'
 const vinegarTitsMeta = './meta/WDY_VINEGAR_TITS.yaml'
+const vinegarTitsMeta2Bar = './meta/WDY_VINEGAR_TITS_2BAR.yaml'
 
 resumeButton.onclick = async () => {
     resumeButton.onclick = null
     try {
-        const songMetaLocation = vinegarTitsMeta
+        const songMetaLocation = vinegarTitsMeta2Bar
 
         const songMeta = await di.knkSongMetaLoaderService.loadSongMetaFrom(songMetaLocation)
 

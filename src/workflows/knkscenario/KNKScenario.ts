@@ -7,8 +7,8 @@ export class KNKScenario {
     ) { }
 
     generateConfig(): number[] | undefined {
-        // const randomPrefab = randomElement(this.prefabData.prefabs)
-        const randomPrefab = this.prefabData.prefabs[this.prefabData.prefabs.length - 1]
+        const randomPrefab = randomElement(this.prefabData.prefabs)
+        // const randomPrefab = this.prefabData.prefabs[this.prefabData.prefabs.length - 1]
 
         if (!randomPrefab) {
             return undefined

@@ -1,4 +1,5 @@
 import { randomElement } from "../util/randomElement"
+import { GasketAudioNode } from "./GasketAudioNode"
 
 interface Config {
     name: string
@@ -11,7 +12,7 @@ export class AlphaPlayer {
     readonly masterGain: GainNode
 
     readonly nodes: {
-        buffer: AudioBufferSourceNode,
+        gasketAudioNode: GasketAudioNode,
         gain: GainNode
     }[]
 
@@ -29,14 +30,12 @@ export class AlphaPlayer {
             gainNode.connect(this.masterGain)
             gainNode.gain.value = 0.001
 
-            const bufferSource = ctx.createBufferSource()
-            bufferSource.buffer = audioBuffer
-            bufferSource.loop = true
-            bufferSource.connect(gainNode)
-            bufferSource.start()
+            const gasketAudioNode = new GasketAudioNode(audioBuffer, ctx)
+            gasketAudioNode.connect(gainNode)
+            gasketAudioNode.start()
             
             return {
-                buffer: bufferSource,
+                gasketAudioNode: gasketAudioNode,
                 gain: gainNode
             }
         })
